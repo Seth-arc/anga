@@ -1,108 +1,137 @@
 import React from 'react';
-import {
-  Document,
-  Page,
-  Text,
-  View,
-  Font
-} from '@react-pdf/renderer';
-import { TeachingStyle } from '../types';
-import { pdfStyles } from '../styles/pdfStyles';
+import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { TeachingStyle, TeachingStyleResults } from '../types';
 
-// Register fonts for PDF rendering
-Font.register({
-  family: 'Poppins',
-  src: 'https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrFJDUc1NECPY.ttf',
+// First, we'll create our PDF-specific styles
+const pdfStyles = StyleSheet.create({
+  page: {
+    padding: 40,
+    fontFamily: 'Helvetica',
+    backgroundColor: '#FFFFFF',
+  },
+  headerContainer: {
+    marginBottom: 20,
+  },
+  headerText: {
+    fontSize: 24,
+    marginBottom: 10,
+    color: '#2E294E',
+  },
+  dateText: {
+    fontSize: 14,
+    color: '#4A4E69',
+    marginBottom: 20,
+  },
+  mainContainer: {
+    marginBottom: 20,
+  },
+  containerTitle: {
+    fontSize: 18,
+    color: '#2E294E',
+    marginBottom: 10,
+  },
+  teachingStyleName: {
+    fontSize: 16,
+    color: '#1B998B',
+    marginBottom: 5,
+  },
+  descriptionText: {
+    fontSize: 12,
+    color: '#4A4E69',
+    lineHeight: 1.5,
+    marginBottom: 10,
+  },
+  scoreContainer: {
+    flexDirection: 'row',
+    marginBottom: 5,
+  },
+  scoreValue: {
+    fontSize: 12,
+    color: '#4A4E69',
+  },
+  footerContainer: {
+    position: 'absolute',
+    bottom: 40,
+    left: 40,
+    right: 40,
+    fontSize: 10,
+    color: '#4A4E69',
+    textAlign: 'center',
+  }
 });
 
-Font.register({
-  family: 'OpenSans',
-  src: 'https://fonts.gstatic.com/s/opensans/v29/memvYaGs126MiZpBA-UvWbX2vVnXBbObj2OVTS-mu0SC55I.ttf',
-});
-
+// Define the props interface for our PDF component
 interface ResultsPDFProps {
-  results: Record<number, number>;
+  results: TeachingStyleResults;
   mainStyle: TeachingStyle;
-  styles: Array<TeachingStyle & { score: number }>;
-  assessmentDate?: Date;
+  orderedStyles: Array<TeachingStyle & { score: number }>;
 }
 
-const ResultsPDF: React.FC<ResultsPDFProps> = ({
-  results,
-  mainStyle,
-  styles,
-  assessmentDate = new Date(),
-}) => {
+// Create the PDF component with proper type handling
+const ResultsPDF: React.FC<ResultsPDFProps> = ({ results, mainStyle, orderedStyles }) => {
+  const currentDate = new Date().toLocaleDateString();
+
   return (
     <Document>
       <Page size="A4" style={pdfStyles.page}>
-        {/* Title Section */}
-        <View style={pdfStyles.container}>
-          <Text style={pdfStyles.titleText}>Teaching Style Profile</Text>
-          <Text style={pdfStyles.normalText}>
-            Based on the Staffordshire Evaluation of Teaching Styles (SETS)©
-          </Text>
-          <Text style={pdfStyles.normalText}>
-            Assessment Date: {assessmentDate.toLocaleDateString()}
+        {/* Header Section */}
+        <View style={pdfStyles.headerContainer}>
+          <Text style={pdfStyles.headerText}>Teaching Style Profile</Text>
+          <Text style={pdfStyles.dateText}>
+            Assessment Date: {currentDate}
           </Text>
         </View>
 
-        {/* Dominant Style Section */}
-        <View style={pdfStyles.container}>
-          <Text style={pdfStyles.subtitleText}>Your Dominant Teaching Style</Text>
-          <View style={pdfStyles.scoreRow}>
-            <Text style={pdfStyles.styleTitleText}>{mainStyle.name}</Text>
-            <Text style={pdfStyles.scoreText}>{results[mainStyle.id]}%</Text>
+        {/* Main Style Section */}
+        <View style={pdfStyles.mainContainer}>
+          <Text style={pdfStyles.containerTitle}>Your Dominant Teaching Style</Text>
+          <Text style={pdfStyles.teachingStyleName}>{mainStyle.name}</Text>
+          <Text style={pdfStyles.descriptionText}>{mainStyle.description}</Text>
+          <View style={pdfStyles.scoreContainer}>
+            <Text style={pdfStyles.scoreValue}>
+              Strength: {results[mainStyle.id]}%
+            </Text>
           </View>
-          <Text style={pdfStyles.normalText}>{mainStyle.description}</Text>
         </View>
-
-        <View style={pdfStyles.dividerLine} />
 
         {/* Complete Profile Section */}
-        <View style={pdfStyles.container}>
-          <Text style={pdfStyles.subtitleText}>Complete Teaching Style Profile</Text>
-          {styles.map((style) => (
-            <View key={style.id} style={pdfStyles.container}>
-              <View style={pdfStyles.scoreRow}>
-                <Text style={pdfStyles.styleTitleText}>{style.name}</Text>
-                <Text style={pdfStyles.scoreText}>{style.score}%</Text>
+        <View style={pdfStyles.mainContainer}>
+          <Text style={pdfStyles.containerTitle}>Complete Teaching Style Profile</Text>
+          {orderedStyles.map(style => (
+            <View key={style.id} style={{ marginBottom: 15 }}>
+              <Text style={pdfStyles.teachingStyleName}>{style.name}</Text>
+              <Text style={pdfStyles.descriptionText}>{style.description}</Text>
+              <View style={pdfStyles.scoreContainer}>
+                <Text style={pdfStyles.scoreValue}>
+                  Strength: {style.score}%
+                </Text>
               </View>
-              <Text style={pdfStyles.normalText}>{style.description}</Text>
             </View>
           ))}
         </View>
 
-        {/* Recommendations Section */}
-        <View style={pdfStyles.container}>
-          <Text style={pdfStyles.subtitleText}>Development Recommendations</Text>
-          <Text style={pdfStyles.normalText}>
-            Based on your profile, consider the following suggestions for professional development:
+        {/* Development Recommendations */}
+        <View style={pdfStyles.mainContainer}>
+          <Text style={pdfStyles.containerTitle}>Development Recommendations</Text>
+          <Text style={pdfStyles.descriptionText}>
+            Based on your profile, consider focusing on the following areas:
           </Text>
-          <Text style={pdfStyles.normalText}>
-            • Focus on leveraging your dominant style ({mainStyle.name}) while developing complementary approaches
-          </Text>
-          <Text style={pdfStyles.normalText}>
-            • Explore opportunities to practice and strengthen your less preferred teaching styles
-          </Text>
-          <Text style={pdfStyles.normalText}>
-            • Consider seeking mentorship or professional development in areas where you'd like to grow
-          </Text>
+          {orderedStyles.slice(0, 2).map(style => (
+            <Text key={style.id} style={pdfStyles.descriptionText}>
+              • Leverage your strength in {style.name.toLowerCase()}
+            </Text>
+          ))}
         </View>
 
         {/* Footer */}
-        <Text style={pdfStyles.footerText}>
-          Generated by Anga - Teaching Styles Assessment Tool{'\n'}
-          Based on SETS© by Mohanna, Chambers & Wall (2007)
-        </Text>
+        <View style={pdfStyles.footerContainer}>
+          <Text>
+            Generated by Anga | Based on the Staffordshire Evaluation of Teaching Styles (SETS)©
+          </Text>
+        </View>
       </Page>
     </Document>
   );
 };
 
 export default ResultsPDF;
-
-export const generatePDF = async (props: ResultsPDFProps): Promise<Blob> => {
-  const { pdf } = await import('@react-pdf/renderer');
-  return pdf(<ResultsPDF {...props} />).toBlob();
-};
