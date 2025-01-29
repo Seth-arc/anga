@@ -1,0 +1,26 @@
+/* Import brand fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Open+Sans:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Define brand color variables */
+:root {
+  --deep-purple: #2E294E;
+  --teal-blue: #1B998B;
+  --sunrise-orange: #FF9F1C;
+  --cloud-white: #F7F7FF;
+  --slate-grey: #4A4E69;
+  --mint-green: #A8E0CC;
+}
+
+/* Set default styles */
+body {
+  @apply bg-cloud-white text-slate-grey font-open-sans;
+}
+
+/* Apply brand typography */
+h1, h2, h3, h4, h5, h6 {
+  @apply font-poppins font-semibold;
+}
