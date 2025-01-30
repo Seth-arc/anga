@@ -15,7 +15,7 @@ export const storeEmailInGithub = async (name: string, email: string): Promise<b
   
       const existing_data = await response.json();
       const current_content = JSON.parse(atob(existing_data.content));
-  
+   
       current_content.subscribers.push({
         name,
         email,
