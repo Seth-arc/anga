@@ -5,6 +5,7 @@ import Container from '../components/Container';
 import LikertScale from '../components/LikertScale';
 import Button from '../components/Button';
 import NavBar from '../components/NavBar';
+import ScenarioIcon from '../components/ScenarioIcon';
 import { useAssessment } from '../contexts/AssessmentContext';
 import { scenarios } from '../data/scenarios';
 
@@ -75,12 +76,10 @@ const AssessmentPage: React.FC = () => {
             className="w-full h-48 bg-slate-grey bg-opacity-10 rounded-lg mb-8 flex items-center justify-center overflow-hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: 0.4 }}
           >
             {/* Replace this with actual scenario images when available */}
-            <div className="w-full h-full flex items-center justify-center">
-              <span className="text-slate-grey">Scenario Illustration</span>
-            </div>
+            <ScenarioIcon scenarioId={currentQuestion.id} />
           </motion.div>
 
           {/* Question card with scenario and response options */}
