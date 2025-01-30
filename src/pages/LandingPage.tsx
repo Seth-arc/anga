@@ -4,12 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import Container from '../components/Container';
 
-// The LandingPage component serves as the entry point of our application
-// It provides an introduction to the assessment and a way to begin
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
 
-  // Define animation variants for staggered animations
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -28,18 +25,6 @@ const LandingPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-cloud-white flex flex-col">
       <Container className="flex-grow flex flex-col">
-        {/* Logo placeholder with subtle animation */}
-        <motion.div 
-          className="mt-8 flex justify-center"
-          variants={itemVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <div className="w-32 h-32 bg-slate-grey bg-opacity-10 rounded-full flex items-center justify-center transition-all duration-300 hover:bg-opacity-20">
-            <span className="text-slate-grey font-poppins">Anga</span>
-          </div>
-        </motion.div>
-
         {/* Main content section */}
         <motion.main 
           className="flex-grow flex items-center justify-center"
@@ -52,16 +37,15 @@ const LandingPage: React.FC = () => {
               className="text-4xl sm:text-5xl md:text-6xl font-poppins font-semibold text-deep-purple mb-6"
               variants={itemVariants}
             >
-              Measure Your Pedagogical Dimensions
+              How Do You Teach?
             </motion.h1>
             
             <motion.p 
               className="text-lg sm:text-xl text-slate-grey mb-8"
               variants={itemVariants}
             >
-              Discover your teaching style through the Staffordshire Evaluation of 
-              Teaching Styles (SETS)©. This research-based assessment will help you 
-              understand your pedagogical strengths and areas for growth.
+              Discover your teaching style, understand your pedagogical strengths and prioritize areas for growth through the Staffordshire Evaluation of 
+              Teaching Styles (SETS)©.
             </motion.p>
             
             <motion.div variants={itemVariants}>
@@ -78,7 +62,7 @@ const LandingPage: React.FC = () => {
               className="mt-6 text-sm text-slate-grey"
               variants={itemVariants}
             >
-              Takes approximately 15-20 minutes to complete
+              Takes approximately 15-20 minutes to complete.
             </motion.p>
           </div>
         </motion.main>
@@ -88,7 +72,7 @@ const LandingPage: React.FC = () => {
       <footer className="py-4 bg-deep-purple text-cloud-white mt-auto">
         <Container>
           <p className="text-sm text-center">
-            © 2025 Anga by Sethu Nguna. Based on SETS© by Mohanna, Chambers & Wall (2007)
+            © 2025 Developed by Sethu Nguna. Based on SETS© by Mohanna, Chambers & Wall (2007)
           </p>
         </Container>
       </footer>

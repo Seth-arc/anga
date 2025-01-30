@@ -10,11 +10,11 @@ interface LikertScaleProps {
 const LikertScale: React.FC<LikertScaleProps> = ({ value, onChange, className = '' }) => {
   // Labels for our Likert scale points
   const labels = [
-    'Strongly Disagree',
-    'Disagree',
+    'Very Unlikely',
+    'Unlikely',
     'Neutral',
-    'Agree',
-    'Strongly Agree'
+    'Likely',
+    'Very Likely'
   ];
 
   return (

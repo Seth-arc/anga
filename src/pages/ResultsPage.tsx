@@ -1,54 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { PDFDownloadLink } from '@react-pdf/renderer';
 import Container from '../components/Container';
 import Button from '../components/Button';
 import HexagonChart from '../components/HexagonChart';
 import StyleStrengthsChart from '../components/StyleStrengthsChart';
-import ShareButtons from '../components/ShareButtons';
 import ResultsPDF from '../components/ResultsPDF';
+import DownloadDialog from '../components/DownloadDialog';
 import { useAssessment } from '../contexts/AssessmentContext';
 import { useScoring } from '../hooks/useScoring';
-import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
+import { ArrowDown } from 'lucide-react';
 
-// This type definition specifies the exact structure of props that the PDFDownloadLink
-// render function will receive. This ensures type safety when working with the PDF generation.
-type PDFRenderFunctionProps = {
-  loading: boolean;
-  error: Error | null;
-  blob: Blob | null;
-  url: string | null;
-}
-
-// The ResultsPage component serves as the final step of the assessment process,
-// displaying the user's teaching style profile and providing options for sharing
-// and downloading the results
 const ResultsPage: React.FC = () => {
-  // Initialize necessary hooks for navigation and state management
   const navigate = useNavigate();
   const { state } = useAssessment();
-  
-  // Use our custom scoring hook to calculate and organize the results
   const { results, mainStyle, orderedStyles, isComplete } = useScoring(state.answers);
-  
-  // Track whether we're rendering on the client side for PDF generation
   const [isClient, setIsClient] = useState(false);
+  const [isDownloadDialogOpen, setIsDownloadDialogOpen] = useState(false);
 
-  // After the initial render, mark that we're on the client side
-  // This is necessary because PDF generation requires browser APIs
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  // Redirect to the assessment page if the user hasn't completed all questions
   useEffect(() => {
     if (!isComplete) {
       navigate('/assessment');
     }
   }, [isComplete, navigate]);
 
-  // Define animation variants for smooth, staggered transitions
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -64,7 +43,6 @@ const ResultsPage: React.FC = () => {
     visible: { opacity: 1, y: 0 }
   };
 
-  // Return early if the assessment isn't complete or if we don't have style data
   if (!isComplete || !mainStyle) {
     return null;
   }
@@ -143,50 +121,34 @@ const ResultsPage: React.FC = () => {
             ))}
           </motion.div>
 
-          {/* Share and Download Section */}
-          <motion.div variants={itemVariants} className="text-center">
-            <ShareButtons 
-              mainStyleName={mainStyle.name} 
-              className="mb-6"
-            />
-            
-            {/* PDF Download Section - Only rendered on client side */}
+          {/* Download and Navigation Section */}
+          <motion.div variants={itemVariants} className="flex justify-center items-center gap-4">
             {isClient && (
-  <PDFDownloadLink
-    document={
-      <ResultsPDF 
-        results={results} 
-        mainStyle={mainStyle} 
-        orderedStyles={orderedStyles}
-      />
-    }
-    fileName="teaching-style-profile.pdf"
-    className="inline-block"
-  >
-    {function RenderPDFButton(props: PDFRenderFunctionProps) {
-      return (
-        <Button
-          variant="primary"
-          isLoading={props.loading}
-          disabled={!!props.error}
-          className="flex items-center gap-2"
-        >
-          <ArrowDownTrayIcon className="w-5 h-5" />
-          {props.loading ? 'Preparing PDF...' : 'Download PDF Report'}
-        </Button>
-      );
-    }}
-  </PDFDownloadLink>
-)}
+              <Button
+                variant="primary"
+                onClick={() => setIsDownloadDialogOpen(true)}
+                className="flex items-center gap-2"
+              >
+                <ArrowDown className="w-5 h-5" />
+                Download PDF Report
+              </Button>
+            )}
 
-            {/* Navigation Button */}
             <Button
               variant="outline"
               onClick={() => navigate('/')}
-              className="mt-4 block mx-auto"
             >
               Start New Assessment
             </Button>
+
+            <DownloadDialog
+              isOpen={isDownloadDialogOpen}
+              onClose={() => setIsDownloadDialogOpen(false)}
+              ResultsPDF={ResultsPDF}
+              results={results}
+              mainStyle={mainStyle}
+              orderedStyles={orderedStyles}
+            />
           </motion.div>
         </motion.div>
       </Container>

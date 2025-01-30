@@ -24,7 +24,7 @@ const NavBar: React.FC<NavBarProps> = ({
             to="/" 
             className="text-deep-purple hover:text-teal-blue transition-colors duration-300"
           >
-            <span className="font-poppins font-semibold text-xl">Anga</span>
+            <span className="font-poppins font-semibold text-xl">Home</span>
           </Link>
 
           {/* Question progress indicator */}

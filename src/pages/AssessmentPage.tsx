@@ -73,7 +73,7 @@ const AssessmentPage: React.FC = () => {
         >
           {/* Image placeholder for scenario visualization */}
           <motion.div 
-            className="w-full h-48 bg-slate-grey bg-opacity-10 rounded-lg mb-8 flex items-center justify-center overflow-hidden"
+            className="w-full h-48 rounded-lg mb-8 flex items-center justify-center overflow-hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
