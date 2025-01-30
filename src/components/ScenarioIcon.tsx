@@ -1,18 +1,27 @@
 import React from 'react';
-import { Book, Users, FlaskConical, Target, Binary, PresentationScreen, 
+import { Book, Users, FlaskConical, Target, Binary, Presentation, 
          UserSquare2, Brain, Workflow, Calculator, Route, School, 
          GraduationCap, UserPlus, TreePine, Lightbulb, Fingerprint, 
-         UserRound, Theater, Laugh, UserStanding, Award, UsersRound, 
-         FileSpreadsheet } from 'lucide-react';
+         UserRound, Theater, Laugh, UserCircle, Award, UsersRound, 
+         FileSpreadsheet, LucideIcon } from 'lucide-react';
 
-// Icon configuration mapped to scenario IDs
-const scenarioIcons = {
+interface IconConfig {
+  icon: LucideIcon;
+  color: string;
+  title: string;
+}
+
+interface ScenarioIconProps {
+  scenarioId: number;
+}
+
+const scenarioIcons: Record<number, IconConfig> = {
   1: { icon: Users, color: "#1B998B", title: "Diverse Audience" },
   2: { icon: Lightbulb, color: "#FF9F1C", title: "Interactive Learning" },
   3: { icon: FlaskConical, color: "#1B998B", title: "Creative Teaching" },
   4: { icon: Target, color: "#2E294E", title: "Learning Outcomes" },
   5: { icon: Binary, color: "#4A4E69", title: "Standalone Topics" },
-  6: { icon: PresentationScreen, color: "#1B998B", title: "Visual Aids" },
+  6: { icon: Presentation, color: "#1B998B", title: "Visual Aids" },
   7: { icon: UserSquare2, color: "#FF9F1C", title: "Large Audience" },
   8: { icon: Brain, color: "#2E294E", title: "Lesson Planning" },
   9: { icon: Workflow, color: "#1B998B", title: "Active Learning" },
@@ -27,13 +36,13 @@ const scenarioIcons = {
   18: { icon: UserRound, color: "#4A4E69", title: "One-on-One Teaching" },
   19: { icon: Theater, color: "#1B998B", title: "Role-play Learning" },
   20: { icon: Laugh, color: "#FF9F1C", title: "Teaching with Humor" },
-  21: { icon: UserStanding, color: "#2E294E", title: "Teaching Presence" },
+  21: { icon: UserCircle, color: "#2E294E", title: "Teaching Presence" },
   22: { icon: Award, color: "#1B998B", title: "Teaching Accreditation" },
   23: { icon: UsersRound, color: "#FF9F1C", title: "Multi-professional" },
   24: { icon: FileSpreadsheet, color: "#4A4E69", title: "Curriculum Structure" }
 };
 
-const ScenarioIcon = ({ scenarioId }) => {
+const ScenarioIcon: React.FC<ScenarioIconProps> = ({ scenarioId }) => {
   // Get icon configuration or use default
   const iconConfig = scenarioIcons[scenarioId] || {
     icon: Book,
