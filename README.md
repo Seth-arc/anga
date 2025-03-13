@@ -48,3 +48,31 @@ export default tseslint.config({
   },
 })
 ```
+
+## Deploying to GitHub Pages
+
+To deploy the site to GitHub Pages, follow these steps:
+
+1. Ensure you have the `gh-pages` package installed as a dev dependency. If not, you can install it using:
+   ```sh
+   npm install gh-pages --save-dev
+   ```
+
+2. Add a `deploy` script to your `package.json`:
+   ```json
+   "scripts": {
+     "deploy": "gh-pages -d dist"
+   }
+   ```
+
+3. Build your project using:
+   ```sh
+   npm run build
+   ```
+
+4. Deploy your project to GitHub Pages using:
+   ```sh
+   npm run deploy
+   ```
+
+Your site should now be deployed to GitHub Pages.
